@@ -2,31 +2,25 @@ package com.algaworks.algaworksapi.jpa;
 
 import com.algaworks.algaworksapi.AlgaworksApiApplication;
 import com.algaworks.algaworksapi.domain.model.Cozinha;
+import com.algaworks.algaworksapi.domain.repository.CozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-import java.util.List;
-
-public class InclusaoCozinhaMain {
+public class AlteracaoCozinhaMain {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgaworksApiApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+        CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
         Cozinha cozinha1 = new Cozinha();
-        cozinha1.setNome("Japonesa");
+        cozinha1.setId(1L);
+        cozinha1.setNome("Brasileira");
 
-        Cozinha cozinha2 = new Cozinha();
-        cozinha2.setNome("Brasileira");
+        cozinhaRepository.salvar(cozinha1);
 
-        cozinha1 = cadastroCozinha.adicionar(cozinha1);
-        cozinha2 = cadastroCozinha.adicionar(cozinha2);
-
-        System.out.println(cozinha1.getId() + " " + cozinha1.getNome());
-        System.out.println(cozinha2.getId() + " " + cozinha2.getNome());
     }
 }
