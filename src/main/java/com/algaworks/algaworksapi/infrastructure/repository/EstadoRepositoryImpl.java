@@ -1,7 +1,7 @@
 package com.algaworks.algaworksapi.infrastructure.repository;
 
-import com.algaworks.algaworksapi.domain.model.Cidade;
-import com.algaworks.algaworksapi.domain.repository.CidadeRepository;
+import com.algaworks.algaworksapi.domain.model.Estado;
+import com.algaworks.algaworksapi.domain.repository.EstadoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,30 +10,30 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Component
-public class CidadeRepositoryImpl implements CidadeRepository {
+public class EstadoRepositoryImpl implements EstadoRepository {
     @PersistenceContext
     private EntityManager manager;
 
     @Override
-    public List<Cidade> listar() {
-        return manager.createQuery("from Cidade", Cidade.class).getResultList();
+    public List<Estado> listar() {
+        return manager.createQuery("from Estado", Estado.class).getResultList();
     }
 
     @Override
-    public Cidade buscar(Long id) {
-        return manager.find(Cidade.class, id);
-    }
-
-    @Override
-    @Transactional
-    public Cidade salvar(Cidade cidade) {
-        return manager.merge(cidade);
+    public Estado buscar(Long id) {
+        return manager.find(Estado.class, id);
     }
 
     @Override
     @Transactional
-    public void remover(Cidade cidade) {
-        cidade = buscar(cidade.getId());
-        manager.remove(cidade);
+    public Estado salvar(Estado estado) {
+        return manager.merge(estado);
+    }
+
+    @Override
+    @Transactional
+    public void remover(Estado estado) {
+        estado = buscar(estado.getId());
+        manager.remove(estado);
     }
 }

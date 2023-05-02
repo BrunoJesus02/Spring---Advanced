@@ -1,13 +1,13 @@
 package com.algaworks.algaworksapi.domain.repository;
 
-import com.algaworks.algaworksapi.domain.model.FormaPagamento;
+import com.algaworks.algaworksapi.domain.model.Permissao;
 
 import java.util.List;
 
-public interface FormaPagamentoRepository {
+public interface PermissaoRepository {
 
-    List<FormaPagamento> listar();
-    FormaPagamento buscar(Long id);
-    FormaPagamento salvar(FormaPagamento formaPagamento);
-    void remover(FormaPagamento formaPagamento);
+    List<Permissao> listar();
+    Permissao buscar(Long id);
+    Permissao salvar(Permissao permissao);
+    void remover(Permissao permissao);
 }

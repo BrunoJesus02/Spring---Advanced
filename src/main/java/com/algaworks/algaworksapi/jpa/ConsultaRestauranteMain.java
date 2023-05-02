@@ -2,27 +2,28 @@ package com.algaworks.algaworksapi.jpa;
 
 import com.algaworks.algaworksapi.AlgaworksApiApplication;
 import com.algaworks.algaworksapi.domain.model.Cozinha;
+import com.algaworks.algaworksapi.domain.model.Restaurante;
 import com.algaworks.algaworksapi.domain.repository.CozinhaRepository;
-import org.apache.catalina.core.StandardContext;
+import com.algaworks.algaworksapi.domain.repository.RestauranteRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
-public class ConsultaCozinhaMain {
+public class ConsultaRestauranteMain {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgaworksApiApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
+        RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
 
-        List<Cozinha> cozinhas = cozinhaRepository.listar();
+        List<Restaurante> restaurante = restauranteRepository.listar();
 
-        for (Cozinha c : cozinhas) {
-            System.out.println(c.getNome());
+        for (Restaurante r : restaurante) {
+            System.out.printf("%s - %f - %s\n", r.getNome(), r.getTaxaFrete(), r.getCozinha().getNome());
         }
     }
 }

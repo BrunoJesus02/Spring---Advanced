@@ -1,7 +1,7 @@
 package com.algaworks.algaworksapi.infrastructure.repository;
 
-import com.algaworks.algaworksapi.domain.model.Estado;
-import com.algaworks.algaworksapi.domain.repository.EstadoRepository;
+import com.algaworks.algaworksapi.domain.model.Permissao;
+import com.algaworks.algaworksapi.domain.repository.PermissaoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,30 +10,30 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Component
-public class EstadoRepositoryImpl implements EstadoRepository {
+public class PermissaoRepositoryImpl implements PermissaoRepository {
     @PersistenceContext
     private EntityManager manager;
 
     @Override
-    public List<Estado> listar() {
-        return manager.createQuery("from Estado", Estado.class).getResultList();
+    public List<Permissao> listar() {
+        return manager.createQuery("from Permissao", Permissao.class).getResultList();
     }
 
     @Override
-    public Estado buscar(Long id) {
-        return manager.find(Estado.class, id);
-    }
-
-    @Override
-    @Transactional
-    public Estado salvar(Estado estado) {
-        return manager.merge(estado);
+    public Permissao buscar(Long id) {
+        return manager.find(Permissao.class, id);
     }
 
     @Override
     @Transactional
-    public void remover(Estado estado) {
-        estado = buscar(estado.getId());
-        manager.remove(estado);
+    public Permissao salvar(Permissao permissao) {
+        return manager.merge(permissao);
+    }
+
+    @Override
+    @Transactional
+    public void remover(Permissao permissao) {
+        permissao = buscar(permissao.getId());
+        manager.remove(permissao);
     }
 }

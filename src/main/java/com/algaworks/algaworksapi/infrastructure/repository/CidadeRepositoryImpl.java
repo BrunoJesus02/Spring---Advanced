@@ -1,7 +1,7 @@
 package com.algaworks.algaworksapi.infrastructure.repository;
 
-import com.algaworks.algaworksapi.domain.model.Cozinha;
-import com.algaworks.algaworksapi.domain.repository.CozinhaRepository;
+import com.algaworks.algaworksapi.domain.model.Cidade;
+import com.algaworks.algaworksapi.domain.repository.CidadeRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,30 +10,30 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Component
-public class CozinhaRepositoryImpl implements CozinhaRepository {
+public class CidadeRepositoryImpl implements CidadeRepository {
     @PersistenceContext
     private EntityManager manager;
 
     @Override
-    public List<Cozinha> listar() {
-        return manager.createQuery("from Cozinha", Cozinha.class).getResultList();
+    public List<Cidade> listar() {
+        return manager.createQuery("from Cidade", Cidade.class).getResultList();
     }
 
     @Override
-    public Cozinha buscar(Long id) {
-        return manager.find(Cozinha.class, id);
-    }
-
-    @Override
-    @Transactional
-    public Cozinha salvar(Cozinha cozinha) {
-        return manager.merge(cozinha);
+    public Cidade buscar(Long id) {
+        return manager.find(Cidade.class, id);
     }
 
     @Override
     @Transactional
-    public void remover(Cozinha cozinha) {
-        cozinha = buscar(cozinha.getId());
-        manager.remove(cozinha);
+    public Cidade salvar(Cidade cidade) {
+        return manager.merge(cidade);
+    }
+
+    @Override
+    @Transactional
+    public void remover(Cidade cidade) {
+        cidade = buscar(cidade.getId());
+        manager.remove(cidade);
     }
 }

@@ -1,13 +1,14 @@
 package com.algaworks.algaworksapi.domain.repository;
 
+import com.algaworks.algaworksapi.domain.model.Cidade;
 import com.algaworks.algaworksapi.domain.model.Estado;
 
 import java.util.List;
 
-public interface EstadoRepository {
+public interface CidadeRepository {
 
-    List<Estado> listar();
-    Estado buscar(Long id);
-    Estado salvar(Estado estado);
-    void remover(Estado estado);
+    List<Cidade> listar();
+    Cidade buscar(Long id);
+    Cidade salvar(Cidade cidade);
+    void remover(Cidade cidade);
 }

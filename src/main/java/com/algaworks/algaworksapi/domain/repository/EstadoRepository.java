@@ -1,13 +1,13 @@
 package com.algaworks.algaworksapi.domain.repository;
 
-import com.algaworks.algaworksapi.domain.model.Permissao;
+import com.algaworks.algaworksapi.domain.model.Estado;
 
 import java.util.List;
 
-public interface PermissaoRepository {
+public interface EstadoRepository {
 
-    List<Permissao> listar();
-    Permissao buscar(Long id);
-    Permissao salvar(Permissao permissao);
-    void remover(Permissao permissao);
+    List<Estado> listar();
+    Estado buscar(Long id);
+    Estado salvar(Estado estado);
+    void remover(Estado estado);
 }

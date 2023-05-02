@@ -1,29 +1,30 @@
 package com.algaworks.algaworksapi.jpa;
 
 import com.algaworks.algaworksapi.AlgaworksApiApplication;
+import com.algaworks.algaworksapi.domain.model.Cidade;
 import com.algaworks.algaworksapi.domain.model.FormaPagamento;
 import com.algaworks.algaworksapi.domain.model.Restaurante;
+import com.algaworks.algaworksapi.domain.repository.CidadeRepository;
 import com.algaworks.algaworksapi.domain.repository.FormaPagamentoRepository;
-import com.algaworks.algaworksapi.domain.repository.RestauranteRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
-public class ConsultaFormaPagamentoMain {
+public class ConsultaCidadeMain {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgaworksApiApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        FormaPagamentoRepository restauranteRepository = applicationContext.getBean(FormaPagamentoRepository.class);
+        CidadeRepository cidadeRepository = applicationContext.getBean(CidadeRepository.class);
 
-        List<FormaPagamento> formaPagamentos = restauranteRepository.listar();
+        List<Cidade> cidades = cidadeRepository.listar();
 
-        for (FormaPagamento f : formaPagamentos) {
-            System.out.printf(f.getDescricao());
+        for (Cidade cidade : cidades) {
+            System.out.printf("%s - %s\n", cidade.getNome(), cidade.getEstado().getNome());
         }
     }
 }
