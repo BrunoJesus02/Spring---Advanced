@@ -59,11 +59,11 @@
             <version>${lombok.version}</version>
         </dependency>
 
-        <!-- XML SERIALIZER -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-        </dependency>
+<!-- XML SERIALIZER -->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.dataformat</groupId>-->
+<!--            <artifactId>jackson-dataformat-xml</artifactId>-->
+<!--        </dependency>-->
 
     </dependencies>
 

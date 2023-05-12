@@ -11,7 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Objects;
 
-@JsonRootName("gastronomia")
+@JsonRootName("cozinha")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -22,9 +22,6 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@JsonIgnore
-    @JsonProperty("titulo")
     @Column(nullable = false)
     private String nome;
-    //@JsonProperty("titulo")
 }
