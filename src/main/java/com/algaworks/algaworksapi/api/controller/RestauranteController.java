@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -62,7 +61,7 @@ public class RestauranteController {
             Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
 
             if (restauranteAtual.isPresent()) {
-                BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id");
+                BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
                 Restaurante restauranteSalvo = cadastroRestaurante.salvar(restauranteAtual.get());
 
                 return ResponseEntity.ok(restauranteSalvo);
