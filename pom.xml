@@ -59,7 +59,19 @@
             <version>${lombok.version}</version>
         </dependency>
 
-<!-- XML SERIALIZER -->
+        <!-- FLYWAY -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+            <version>9.16.3</version>
+        </dependency>
+
+
+        <!-- XML SERIALIZER -->
 <!--        <dependency>-->
 <!--            <groupId>com.fasterxml.jackson.dataformat</groupId>-->
 <!--            <artifactId>jackson-dataformat-xml</artifactId>-->
