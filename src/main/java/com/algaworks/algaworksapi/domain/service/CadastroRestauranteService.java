@@ -15,18 +15,24 @@ public class CadastroRestauranteService {
     private RestauranteRepository restauranteRepository;
 
     @Autowired
-    private CozinhaRepository cozinhaRepository;
+    private CadastroCozinhaService cozinhaService;
+
+    public static final String MSG_RESTAURANTE_NAO_ENCONTRADA = "Não existe um cadastro de restaurante com o código %d";
+    public static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido, pois está em uso.";
 
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
-
-        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)));
+        Cozinha cozinha = cozinhaService.buscarOuFalhar(cozinhaId);
 
         restaurante.setCozinha(cozinha);
 
         return restauranteRepository.save(restaurante);
+    }
+
+    public Restaurante buscarOuFalhar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_RESTAURANTE_NAO_ENCONTRADA, restauranteId)));
     }
 
 }
