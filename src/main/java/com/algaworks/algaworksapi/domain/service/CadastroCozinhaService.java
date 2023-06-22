@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.domain.service;
 
+import com.algaworks.algaworksapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.model.Cozinha;
@@ -26,7 +27,7 @@ public class CadastroCozinhaService {
         try {
             cozinhaRepository.deleteById(cozinhaId);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId));
+            throw new CozinhaNaoEncontradaException(cozinhaId);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, cozinhaId));
         }
@@ -34,7 +35,6 @@ public class CadastroCozinhaService {
 
     public Cozinha buscarOuFalhar(Long cozinhaId) {
         return cozinhaRepository.findById(cozinhaId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
+                .orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));
     }
 }
