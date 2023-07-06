@@ -1,6 +1,7 @@
 package com.algaworks.algaworksapi.domain.model;
 
-import com.algaworks.algaworksapi.Groups;
+import com.algaworks.algaworksapi.core.validation.Groups;
+import com.algaworks.algaworksapi.core.validation.Multiplo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +10,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
@@ -27,11 +30,13 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "nome é obrigatório")
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
+    @NotNull
     @PositiveOrZero
+    @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
