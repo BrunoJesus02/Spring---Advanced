@@ -1,20 +1,19 @@
 package com.algaworks.algaworksapi.api.controller;
 
-import com.algaworks.algaworksapi.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algaworksapi.api.converter.input.EstadoModelInputConverter;
+import com.algaworks.algaworksapi.api.converter.output.EstadoModelOutputConverter;
+import com.algaworks.algaworksapi.api.model.EstadoModel;
+import com.algaworks.algaworksapi.api.model.input.EstadoInput;
 import com.algaworks.algaworksapi.domain.model.Estado;
 import com.algaworks.algaworksapi.domain.repository.EstadoRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroEstadoService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,29 +25,39 @@ public class EstadoController {
     @Autowired
     private CadastroEstadoService cadastroEstado;
 
+    @Autowired
+    private EstadoModelInputConverter estadoInputConverter;
+
+    @Autowired
+    private EstadoModelOutputConverter estadoOutputConverter;
+
     @GetMapping
-    public List<Estado> listar() {
-        return estadoRepository.findAll();
+    public List<EstadoModel> listar() {
+        return estadoInputConverter.toCollectionModel(estadoRepository.findAll());
     }
 
     @GetMapping("/{estadoId}")
-    public Estado buscar(@PathVariable Long estadoId) {
-        return cadastroEstado.buscarOuFalhar(estadoId);
+    public EstadoModel buscar(@PathVariable Long estadoId) {
+        return estadoInputConverter.toModel(cadastroEstado.buscarOuFalhar(estadoId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado adicionar(@RequestBody @Valid Estado estado) {
-        return cadastroEstado.salvar(estado);
+    public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+        Estado estado = estadoOutputConverter.toDomainObject(estadoInput);
+
+        estado = cadastroEstado.salvar(estado);
+
+        return estadoInputConverter.toModel(estado);
     }
 
     @PutMapping("/{estadoId}")
-    public Estado atualizar(@PathVariable Long estadoId, @RequestBody @Valid Estado estado) {
+    public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
         Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 
-        BeanUtils.copyProperties(estado, estadoAtual, "id");
+        estadoOutputConverter.copyToDomainObject(estadoInput, estadoAtual);
 
-        return cadastroEstado.salvar(estadoAtual);
+        return estadoInputConverter.toModel(cadastroEstado.salvar(estadoAtual));
     }
 
     @DeleteMapping("/{estadoId}")

@@ -17,6 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <lombok.version>1.18.22</lombok.version>
+        <modelmapper.version>3.0.0</modelmapper.version>
     </properties>
 
     <!-- SPRING -->
@@ -108,6 +109,12 @@
 <!--            <artifactId>jackson-dataformat-xml</artifactId>-->
 <!--        </dependency>-->
 
+        <!-- MODEL MAPPER -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
