@@ -4,6 +4,7 @@ import com.algaworks.algaworksapi.api.converter.input.RestauranteModelInputConve
 import com.algaworks.algaworksapi.api.converter.output.RestauranteModelOutputConverter;
 import com.algaworks.algaworksapi.api.model.RestauranteModel;
 import com.algaworks.algaworksapi.api.model.input.RestauranteInput;
+import com.algaworks.algaworksapi.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
 import com.algaworks.algaworksapi.domain.model.Restaurante;
@@ -64,7 +65,7 @@ public class RestauranteController {
             restauranteOutputConverter.copyToDomainObject(restauranteInput, restauranteAtual);
 
             return restauranteInputConverter.toModel(cadastroRestaurante.salvar(restauranteAtual));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
