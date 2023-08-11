@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -22,6 +23,9 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+
+    @Column(nullable = false)
+    private String codigo;
 
     @Column(nullable = false)
     private BigDecimal subtotal;
@@ -69,6 +73,11 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
 
+    @PrePersist
+    private void gerarCodigo() {
+        setCodigo(UUID.randomUUID().toString());
+    }
+
     public void calcularValorTotal() {
         getItens().forEach(ItemPedido::calcularPrecoTotal);
 
@@ -97,7 +106,7 @@ public class Pedido {
     private void setStatus(StatusPedido novoStatus) {
         if(getStatus().naoPodeAlterarPara(novoStatus)) {
             throw new NegocioException(String.format("Status do pedido %s não pode ser alterado de %s para %s",
-                    getId(), getStatus().getDescricao(), novoStatus.getDescricao()));
+                    getCodigo(), getStatus().getDescricao(), novoStatus.getDescricao()));
         }
         this.status = novoStatus;
     }
