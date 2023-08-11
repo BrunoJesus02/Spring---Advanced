@@ -2,7 +2,7 @@ package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.EstadoModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.EstadoModelOutputConverter;
-import com.algaworks.algaworksapi.api.model.EstadoModel;
+import com.algaworks.algaworksapi.api.model.output.EstadoModel;
 import com.algaworks.algaworksapi.api.model.input.EstadoInput;
 import com.algaworks.algaworksapi.domain.model.Estado;
 import com.algaworks.algaworksapi.domain.repository.EstadoRepository;

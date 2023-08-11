@@ -2,7 +2,7 @@ package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.CidadeModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.CidadeModelOutputConverter;
-import com.algaworks.algaworksapi.api.model.CidadeModel;
+import com.algaworks.algaworksapi.api.model.output.CidadeModel;
 import com.algaworks.algaworksapi.api.model.input.CidadeInput;
 import com.algaworks.algaworksapi.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;

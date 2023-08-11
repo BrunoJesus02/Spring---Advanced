@@ -2,7 +2,7 @@ package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.RestauranteModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.RestauranteModelOutputConverter;
-import com.algaworks.algaworksapi.api.model.RestauranteModel;
+import com.algaworks.algaworksapi.api.model.output.RestauranteModel;
 import com.algaworks.algaworksapi.api.model.input.RestauranteInput;
 import com.algaworks.algaworksapi.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.CozinhaNaoEncontradaException;

@@ -1,6 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
-import com.algaworks.algaworksapi.api.model.EstadoModel;
+import com.algaworks.algaworksapi.api.model.output.EstadoModel;
 import com.algaworks.algaworksapi.domain.model.Estado;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

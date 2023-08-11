@@ -1,7 +1,7 @@
 package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.PermissaoModelInputConverter;
-import com.algaworks.algaworksapi.api.model.PermissaoModel;
+import com.algaworks.algaworksapi.api.model.output.PermissaoModel;
 import com.algaworks.algaworksapi.domain.model.Grupo;
 import com.algaworks.algaworksapi.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
-import com.algaworks.algaworksapi.api.model.CidadeModel;
+import com.algaworks.algaworksapi.api.model.output.CidadeModel;
 import com.algaworks.algaworksapi.domain.model.Cidade;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

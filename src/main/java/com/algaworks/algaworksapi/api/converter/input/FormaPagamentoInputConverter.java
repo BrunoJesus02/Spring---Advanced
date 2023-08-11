@@ -1,13 +1,12 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
-import com.algaworks.algaworksapi.api.model.FormaPagamentoModel;
+import com.algaworks.algaworksapi.api.model.output.FormaPagamentoModel;
 import com.algaworks.algaworksapi.domain.model.FormaPagamento;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

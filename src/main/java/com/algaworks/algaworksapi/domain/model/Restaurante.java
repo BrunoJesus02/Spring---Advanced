@@ -106,4 +106,12 @@ public class Restaurante {
     public boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento) {
         return !aceitaFormaPagamento(formaPagamento);
     }
+
+    public boolean contemProduto(Produto produto) {
+        return getProdutos().contains(produto);
+    }
+
+    public boolean naoContemProduto(Produto produto) {
+        return !contemProduto(produto);
+    }
 }

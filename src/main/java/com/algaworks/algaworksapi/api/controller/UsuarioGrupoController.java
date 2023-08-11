@@ -1,7 +1,7 @@
 package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.GrupoModelInputConverter;
-import com.algaworks.algaworksapi.api.model.GrupoModel;
+import com.algaworks.algaworksapi.api.model.output.GrupoModel;
 import com.algaworks.algaworksapi.domain.model.Usuario;
 import com.algaworks.algaworksapi.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;

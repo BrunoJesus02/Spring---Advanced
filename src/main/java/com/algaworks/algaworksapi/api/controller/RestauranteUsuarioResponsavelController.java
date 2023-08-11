@@ -1,7 +1,7 @@
 package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.UsuarioModelInputConverter;
-import com.algaworks.algaworksapi.api.model.UsuarioModel;
+import com.algaworks.algaworksapi.api.model.output.UsuarioModel;
 import com.algaworks.algaworksapi.domain.model.Restaurante;
 import com.algaworks.algaworksapi.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;

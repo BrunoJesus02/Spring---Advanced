@@ -1,4 +1,4 @@
-package com.algaworks.algaworksapi.api.model;
+package com.algaworks.algaworksapi.api.model.output;
 
 import lombok.Getter;
 import lombok.Setter;

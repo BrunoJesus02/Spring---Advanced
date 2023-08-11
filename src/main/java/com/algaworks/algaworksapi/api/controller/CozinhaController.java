@@ -2,7 +2,7 @@ package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.CozinhaModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.CozinhaModelOutputConverter;
-import com.algaworks.algaworksapi.api.model.CozinhaModel;
+import com.algaworks.algaworksapi.api.model.output.CozinhaModel;
 import com.algaworks.algaworksapi.api.model.input.CozinhaInput;
 import com.algaworks.algaworksapi.domain.model.Cozinha;
 import com.algaworks.algaworksapi.domain.repository.CozinhaRepository;

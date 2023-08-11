@@ -1,6 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
-import com.algaworks.algaworksapi.api.model.UsuarioModel;
+import com.algaworks.algaworksapi.api.model.output.UsuarioModel;
 import com.algaworks.algaworksapi.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

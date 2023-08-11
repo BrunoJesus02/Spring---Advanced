@@ -1,6 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
-import com.algaworks.algaworksapi.api.model.RestauranteModel;
+import com.algaworks.algaworksapi.api.model.output.RestauranteModel;
 import com.algaworks.algaworksapi.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

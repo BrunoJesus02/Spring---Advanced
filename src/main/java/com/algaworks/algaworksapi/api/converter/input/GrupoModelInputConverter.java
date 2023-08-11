@@ -1,6 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
-import com.algaworks.algaworksapi.api.model.GrupoModel;
+import com.algaworks.algaworksapi.api.model.output.GrupoModel;
 import com.algaworks.algaworksapi.domain.model.Grupo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package com.algaworks.algaworksapi.api.converter.output;
 
-import com.algaworks.algaworksapi.api.model.FormaPagamentoModel;
 import com.algaworks.algaworksapi.api.model.input.FormaPagamentoInput;
 import com.algaworks.algaworksapi.domain.model.FormaPagamento;
 import org.modelmapper.ModelMapper;

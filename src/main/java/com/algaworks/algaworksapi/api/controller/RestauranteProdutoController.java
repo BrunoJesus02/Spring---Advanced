@@ -2,7 +2,7 @@ package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.ProdutoModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.ProdutoModelOutputConverter;
-import com.algaworks.algaworksapi.api.model.ProdutoModel;
+import com.algaworks.algaworksapi.api.model.output.ProdutoModel;
 import com.algaworks.algaworksapi.api.model.input.ProdutoInput;
 import com.algaworks.algaworksapi.domain.model.Produto;
 import com.algaworks.algaworksapi.domain.model.Restaurante;

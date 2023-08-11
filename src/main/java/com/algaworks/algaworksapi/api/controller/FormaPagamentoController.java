@@ -2,7 +2,7 @@ package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.FormaPagamentoInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.FormaPagamentoOutputConverter;
-import com.algaworks.algaworksapi.api.model.FormaPagamentoModel;
+import com.algaworks.algaworksapi.api.model.output.FormaPagamentoModel;
 import com.algaworks.algaworksapi.api.model.input.FormaPagamentoInput;
 import com.algaworks.algaworksapi.domain.model.FormaPagamento;
 import com.algaworks.algaworksapi.domain.repository.FormaPagamentoRepository;

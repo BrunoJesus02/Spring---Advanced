@@ -2,7 +2,7 @@ package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.GrupoModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.GrupoModelOutputConverter;
-import com.algaworks.algaworksapi.api.model.GrupoModel;
+import com.algaworks.algaworksapi.api.model.output.GrupoModel;
 import com.algaworks.algaworksapi.api.model.input.GrupoInput;
 import com.algaworks.algaworksapi.domain.model.Grupo;
 import com.algaworks.algaworksapi.domain.repository.GrupoRepository;
