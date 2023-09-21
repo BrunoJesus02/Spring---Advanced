@@ -6,6 +6,7 @@ import com.algaworks.algaworksapi.api.converter.output.PedidoModelOutputConverte
 import com.algaworks.algaworksapi.api.model.input.PedidoInput;
 import com.algaworks.algaworksapi.api.model.output.PedidoModel;
 import com.algaworks.algaworksapi.api.model.output.PedidoResumoModel;
+import com.algaworks.algaworksapi.core.data.PageableTranslator;
 import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
 import com.algaworks.algaworksapi.domain.model.Pedido;
@@ -14,7 +15,11 @@ import com.algaworks.algaworksapi.domain.repository.PedidoRepository;
 import com.algaworks.algaworksapi.domain.repository.filter.PedidoFilter;
 import com.algaworks.algaworksapi.domain.service.EmissaoPedidoService;
 import com.algaworks.algaworksapi.infrastructure.repository.spec.PedidoSpecs;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,10 +46,13 @@ public class PedidoController {
     private PedidoRepository pedidoRepository;
 
     @GetMapping
-    public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
-        List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
+    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
+        pageable = traduzirPageable(pageable);
 
-        return pedidoResumoModelInputConverter.toCollectionModel(todosPedidos);
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
+        List<PedidoResumoModel> pedidosPageModel = pedidoResumoModelInputConverter.toCollectionModel(pedidosPage.getContent());
+
+        return new PageImpl<>(pedidosPageModel, pageable, pedidosPage.getTotalElements());
     }
 
     @GetMapping("/{codigoPedido}")
@@ -68,5 +76,16 @@ public class PedidoController {
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
+    }
+
+    private Pageable traduzirPageable(Pageable pageable) {
+        var mapeamento = ImmutableMap.of(
+                "codigo", "codigo",
+                "restaurante.nome", "restaurante.nome",
+                "nomeCliente", "cliente.nome",
+                "valorTotal", "valorTotal"
+        );
+
+        return PageableTranslator.translate(pageable, mapeamento);
     }
 }
