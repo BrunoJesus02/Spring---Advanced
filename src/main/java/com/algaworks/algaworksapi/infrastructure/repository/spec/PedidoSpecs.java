@@ -1,7 +1,7 @@
 package com.algaworks.algaworksapi.infrastructure.repository.spec;
 
 import com.algaworks.algaworksapi.domain.model.Pedido;
-import com.algaworks.algaworksapi.domain.repository.filter.PedidoFilter;
+import com.algaworks.algaworksapi.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
