@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
-public class PdfVendaReportService implements VendaReportService {
+public class PdfVendaReportServiceImpl implements VendaReportService {
 
     @Autowired
     private VendaQueryService vendaQueryService;
