@@ -1,6 +1,7 @@
 package com.algaworks.algaworksapi.domain.service;
 
 import com.algaworks.algaworksapi.domain.model.Pedido;
+import com.algaworks.algaworksapi.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,20 +15,14 @@ public class FluxoPedidoService {
     private EmissaoPedidoService pedidoService;
 
     @Autowired
-    private EnvioEmailService envioEmailService;
+    private PedidoRepository pedidoRepository;
 
     @Transactional
     public void confirmar(String codigoPedido) {
         Pedido pedido = pedidoService.buscarOuFalhar(codigoPedido);
         pedido.confirmar();
 
-        Mensagem mensagem = Mensagem.builder()
-                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("O pedido de código <strong>" + pedido.getCodigo() + "<strong> foi confirmado!")
-                .destinatario(pedido.getCliente().getEmail())
-                .build();
-
-        envioEmailService.enviar(mensagem);
+        pedidoRepository.save(pedido);
     }
 
     @Transactional
@@ -40,5 +35,7 @@ public class FluxoPedidoService {
     public void cancelar(String codigoPedido) {
         Pedido pedido = pedidoService.buscarOuFalhar(codigoPedido);
         pedido.cancelar();
+
+        pedidoRepository.save(pedido);
     }
 }
