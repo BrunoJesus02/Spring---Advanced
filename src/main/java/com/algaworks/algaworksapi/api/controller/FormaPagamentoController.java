@@ -8,11 +8,14 @@ import com.algaworks.algaworksapi.domain.model.FormaPagamento;
 import com.algaworks.algaworksapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/formas-pagamento")
@@ -31,8 +34,12 @@ public class FormaPagamentoController {
     private FormaPagamentoOutputConverter formaPagamentoOutputConverter;
 
     @GetMapping
-    public List<FormaPagamentoModel> listar() {
-        return formaPagamentoInputConverter.toCollectionModel(formaPagamentoRepository.findAll());
+    public ResponseEntity<List<FormaPagamentoModel>> listar() {
+        List<FormaPagamentoModel> formaPagamentoModels = formaPagamentoInputConverter.toCollectionModel(formaPagamentoRepository.findAll());
+
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .body(formaPagamentoModels);
     }
 
     @GetMapping("/{formaPagamentoId}")
