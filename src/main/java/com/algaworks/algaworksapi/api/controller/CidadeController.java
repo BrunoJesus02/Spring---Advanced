@@ -1,9 +1,10 @@
 package com.algaworks.algaworksapi.api.controller;
 
+import com.algaworks.algaworksapi.api.controller.openapi.CidadeControllerOpenApi;
 import com.algaworks.algaworksapi.api.converter.input.CidadeModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.CidadeModelOutputConverter;
-import com.algaworks.algaworksapi.api.model.output.CidadeModel;
 import com.algaworks.algaworksapi.api.model.input.CidadeInput;
+import com.algaworks.algaworksapi.api.model.output.CidadeModel;
 import com.algaworks.algaworksapi.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
 import com.algaworks.algaworksapi.domain.model.Cidade;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cidades")
-public class CidadeController {
+public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
     private CidadeRepository cidadeRepository;
@@ -55,7 +56,8 @@ public class CidadeController {
     }
 
     @PutMapping("/{cidadeId}")
-    public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
+    public CidadeModel atualizar(@PathVariable Long cidadeId,
+                                 @RequestBody @Valid CidadeInput cidadeInput) {
         Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 
         cidadeOutputConverter.copyToDomainObject(cidadeInput, cidadeAtual);

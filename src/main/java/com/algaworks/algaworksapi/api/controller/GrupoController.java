@@ -1,9 +1,10 @@
 package com.algaworks.algaworksapi.api.controller;
 
+import com.algaworks.algaworksapi.api.controller.openapi.GrupoControllerOpenApi;
 import com.algaworks.algaworksapi.api.converter.input.GrupoModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.GrupoModelOutputConverter;
-import com.algaworks.algaworksapi.api.model.output.GrupoModel;
 import com.algaworks.algaworksapi.api.model.input.GrupoInput;
+import com.algaworks.algaworksapi.api.model.output.GrupoModel;
 import com.algaworks.algaworksapi.domain.model.Grupo;
 import com.algaworks.algaworksapi.domain.repository.GrupoRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroGrupoService;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements GrupoControllerOpenApi {
 
     @Autowired
     private GrupoRepository grupoRepository;
