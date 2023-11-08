@@ -4,6 +4,7 @@ import com.algaworks.algaworksapi.api.converter.input.EstadoModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.EstadoModelOutputConverter;
 import com.algaworks.algaworksapi.api.model.output.EstadoModel;
 import com.algaworks.algaworksapi.api.model.input.EstadoInput;
+import com.algaworks.algaworksapi.api.openapi.controller.EstadoControllerOpenApi;
 import com.algaworks.algaworksapi.domain.model.Estado;
 import com.algaworks.algaworksapi.domain.repository.EstadoRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroEstadoService;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
-public class EstadoController {
+public class EstadoController implements EstadoControllerOpenApi {
 
     @Autowired
     private EstadoRepository estadoRepository;

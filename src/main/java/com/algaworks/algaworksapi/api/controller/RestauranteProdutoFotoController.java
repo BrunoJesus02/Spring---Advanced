@@ -3,6 +3,7 @@ package com.algaworks.algaworksapi.api.controller;
 import com.algaworks.algaworksapi.api.converter.input.FotoProdutoModelInputConverter;
 import com.algaworks.algaworksapi.api.model.input.FotoProdutoInput;
 import com.algaworks.algaworksapi.api.model.output.FotoProdutoModel;
+import com.algaworks.algaworksapi.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.model.FotoProduto;
 import com.algaworks.algaworksapi.domain.model.Produto;
@@ -26,8 +27,8 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
     @Autowired
     private CadastroProdutoService cadastroProdutoService;
@@ -41,13 +42,15 @@ public class RestauranteProdutoFotoController {
     @Autowired
     private FotoStorageService fotoStorageService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    @GetMapping
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
 
         return fotoProdutoInputConverter.toModel(fotoProduto);
     }
 
+    @Override
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
                                           @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
@@ -66,7 +69,8 @@ public class RestauranteProdutoFotoController {
        return fotoProdutoInputConverter.toModel(catalogoFotoProdutoService.salvar(foto, arquivo.getInputStream()));
     }
 
-    @GetMapping
+    @Override
+    @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
                                                             @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
         try {
@@ -94,6 +98,7 @@ public class RestauranteProdutoFotoController {
         }
     }
 
+    @Override
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {

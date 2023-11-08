@@ -1,4 +1,4 @@
-package com.algaworks.algaworksapi.api.controller.openapi;
+package com.algaworks.algaworksapi.api.openapi.controller;
 
 import com.algaworks.algaworksapi.api.exceptionhandler.Problem;
 import com.algaworks.algaworksapi.api.model.input.CidadeInput;
@@ -11,20 +11,20 @@ import java.util.List;
 public interface CidadeControllerOpenApi {
 
     @ApiOperation("Lista as cidades")
-    public List<CidadeModel> listar();
+    List<CidadeModel> listar();
 
     @ApiOperation("Busca uma cidade por ID")
     @ApiResponses({
             @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
             @ApiResponse(code = 404, message = "cidade não encontrada", response = Problem.class)
     })
-    public CidadeModel buscar(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+    CidadeModel buscar(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
     @ApiOperation("Cadastra uma cidade")
     @ApiResponses({
             @ApiResponse(code = 201, message = "cidade cadastrada")
     })
-    public CidadeModel adicionar(@ApiParam(name = "corpo", value = "Representacao de uma nova cidade")
+    CidadeModel adicionar(@ApiParam(name = "corpo", value = "Representacao de uma nova cidade", required = true)
                                  CidadeInput cidadeInput);
 
     @ApiOperation("Atualiza uma cidade por ID")
@@ -32,7 +32,7 @@ public interface CidadeControllerOpenApi {
             @ApiResponse(code = 200, message = "cidade atualizada"),
             @ApiResponse(code = 404, message = "cidade não encontrada", response = Problem.class)
     })
-    public CidadeModel atualizar(@ApiParam(value = "ID de uma cidade", example = "1")
+    CidadeModel atualizar(@ApiParam(value = "ID de uma cidade", example = "1", required = true)
                                  Long cidadeId,
                                  @ApiParam(name = "corpo", value = "Representacao de uma nova cidade com os novos dados")
                                  CidadeInput cidadeInput);
@@ -42,5 +42,5 @@ public interface CidadeControllerOpenApi {
             @ApiResponse(code = 204, message = "cidade excluida"),
             @ApiResponse(code = 404, message = "cidade não encontrada", response = Problem.class)
     })
-    public void remover(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+    void remover(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 }

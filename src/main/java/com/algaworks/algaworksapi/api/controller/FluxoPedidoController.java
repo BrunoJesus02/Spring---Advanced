@@ -3,15 +3,17 @@ package com.algaworks.algaworksapi.api.controller;
 import com.algaworks.algaworksapi.api.converter.input.PedidoModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.input.PedidoResumoModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.PedidoModelOutputConverter;
+import com.algaworks.algaworksapi.api.openapi.controller.FluxoPedidoControllerOpenApi;
 import com.algaworks.algaworksapi.domain.repository.PedidoRepository;
 import com.algaworks.algaworksapi.domain.service.FluxoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/pedidos/{codigoPedido}")
-public class FluxoPedidoController {
+@RequestMapping(value = "/pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
+public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 
     @Autowired
     private PedidoModelInputConverter pedidoModelInputConverter;

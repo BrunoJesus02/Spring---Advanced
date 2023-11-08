@@ -4,6 +4,7 @@ import com.algaworks.algaworksapi.api.converter.input.FormaPagamentoInputConvert
 import com.algaworks.algaworksapi.api.converter.output.FormaPagamentoOutputConverter;
 import com.algaworks.algaworksapi.api.model.output.FormaPagamentoModel;
 import com.algaworks.algaworksapi.api.model.input.FormaPagamentoInput;
+import com.algaworks.algaworksapi.api.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.algaworks.algaworksapi.domain.model.FormaPagamento;
 import com.algaworks.algaworksapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroFormaPagamentoService;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/formas-pagamento")
-public class FormaPagamentoController {
+public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;

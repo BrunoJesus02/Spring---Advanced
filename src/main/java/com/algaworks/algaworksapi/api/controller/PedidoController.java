@@ -6,6 +6,7 @@ import com.algaworks.algaworksapi.api.converter.output.PedidoModelOutputConverte
 import com.algaworks.algaworksapi.api.model.input.PedidoInput;
 import com.algaworks.algaworksapi.api.model.output.PedidoModel;
 import com.algaworks.algaworksapi.api.model.output.PedidoResumoModel;
+import com.algaworks.algaworksapi.api.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algaworksapi.core.data.PageableTranslator;
 import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
@@ -16,19 +17,22 @@ import com.algaworks.algaworksapi.domain.filter.PedidoFilter;
 import com.algaworks.algaworksapi.domain.service.EmissaoPedidoService;
 import com.algaworks.algaworksapi.infrastructure.repository.spec.PedidoSpecs;
 import com.google.common.collect.ImmutableMap;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/pedidos")
-public class PedidoController {
+@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired
     private PedidoModelInputConverter pedidoModelInputConverter;

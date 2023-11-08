@@ -1,6 +1,6 @@
 package com.algaworks.algaworksapi.api.controller;
 
-import com.algaworks.algaworksapi.api.controller.openapi.CidadeControllerOpenApi;
+import com.algaworks.algaworksapi.api.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.algaworksapi.api.converter.input.CidadeModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.CidadeModelOutputConverter;
 import com.algaworks.algaworksapi.api.model.input.CidadeInput;
@@ -12,13 +12,14 @@ import com.algaworks.algaworksapi.domain.repository.CidadeRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cidades")
+@RequestMapping(value = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired

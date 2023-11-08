@@ -4,6 +4,7 @@ import com.algaworks.algaworksapi.api.converter.input.ProdutoModelInputConverter
 import com.algaworks.algaworksapi.api.converter.output.ProdutoModelOutputConverter;
 import com.algaworks.algaworksapi.api.model.output.ProdutoModel;
 import com.algaworks.algaworksapi.api.model.input.ProdutoInput;
+import com.algaworks.algaworksapi.api.openapi.controller.RestauranteProdutoControllerOpenApi;
 import com.algaworks.algaworksapi.domain.model.Produto;
 import com.algaworks.algaworksapi.domain.model.Restaurante;
 import com.algaworks.algaworksapi.domain.repository.ProdutoRepository;
@@ -11,14 +12,15 @@ import com.algaworks.algaworksapi.domain.service.CadastroProdutoService;
 import com.algaworks.algaworksapi.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/produtos")
-public class RestauranteProdutoController {
+@RequestMapping(value = "/restaurantes/{restauranteId}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoController implements RestauranteProdutoControllerOpenApi {
 
     @Autowired
     private ProdutoRepository produtoRepository;
