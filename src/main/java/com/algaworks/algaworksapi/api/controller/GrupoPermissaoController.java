@@ -2,17 +2,19 @@ package com.algaworks.algaworksapi.api.controller;
 
 import com.algaworks.algaworksapi.api.converter.input.PermissaoModelInputConverter;
 import com.algaworks.algaworksapi.api.model.output.PermissaoModel;
+import com.algaworks.algaworksapi.api.openapi.controller.GrupoPermissaoControllerOpenApi;
 import com.algaworks.algaworksapi.domain.model.Grupo;
 import com.algaworks.algaworksapi.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/grupos/{grupoId}/permissoes")
-public class GrupoPermissaoController {
+@RequestMapping(value = "/grupos/{grupoId}/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 
     @Autowired
     private CadastroGrupoService grupoService;

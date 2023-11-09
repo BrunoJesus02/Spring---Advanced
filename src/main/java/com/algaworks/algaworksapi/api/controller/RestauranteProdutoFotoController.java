@@ -53,20 +53,21 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @Override
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-                                          @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+                                          @Valid FotoProdutoInput fotoProdutoInput,
+                                          @RequestPart(required = true) MultipartFile arquivo) throws IOException {
 
         Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
 
-        MultipartFile arquivo = fotoProdutoInput.getArquivo();
+        MultipartFile arquivoRecebido = fotoProdutoInput.getArquivo();
 
         FotoProduto foto = new FotoProduto();
         foto.setProduto(produto);
         foto.setDescricao(fotoProdutoInput.getDescricao());
-        foto.setContentType(arquivo.getContentType());
-        foto.setTamanho(arquivo.getSize());
-        foto.setNomeArquivo(arquivo.getOriginalFilename());
+        foto.setContentType(arquivoRecebido.getContentType());
+        foto.setTamanho(arquivoRecebido.getSize());
+        foto.setNomeArquivo(arquivoRecebido.getOriginalFilename());
 
-       return fotoProdutoInputConverter.toModel(catalogoFotoProdutoService.salvar(foto, arquivo.getInputStream()));
+       return fotoProdutoInputConverter.toModel(catalogoFotoProdutoService.salvar(foto, arquivoRecebido.getInputStream()));
     }
 
     @Override
