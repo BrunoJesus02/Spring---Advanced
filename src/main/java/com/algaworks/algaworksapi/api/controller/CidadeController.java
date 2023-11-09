@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.controller;
 
+import com.algaworks.algaworksapi.api.ResourceUriHelper;
 import com.algaworks.algaworksapi.api.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.algaworksapi.api.converter.input.CidadeModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.CidadeModelOutputConverter;
@@ -11,11 +12,17 @@ import com.algaworks.algaworksapi.domain.model.Cidade;
 import com.algaworks.algaworksapi.domain.repository.CidadeRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -50,7 +57,10 @@ public class CidadeController implements CidadeControllerOpenApi {
         try {
             Cidade cidade = cidadeOutputConverter.toDomainObject(cidadeInput);
 
-            return cidadeInputConverter.toModel(cadastroCidade.salvar(cidade));
+            CidadeModel cidadeModel = cidadeInputConverter.toModel(cadastroCidade.salvar(cidade));
+            ResourceUriHelper.addUriInResponseHeader(cidadeModel.getId());
+
+            return cidadeModel;
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
