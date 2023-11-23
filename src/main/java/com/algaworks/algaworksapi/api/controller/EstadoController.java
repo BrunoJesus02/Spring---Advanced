@@ -9,6 +9,7 @@ import com.algaworks.algaworksapi.domain.model.Estado;
 import com.algaworks.algaworksapi.domain.repository.EstadoRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroEstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class EstadoController implements EstadoControllerOpenApi {
     private EstadoModelOutputConverter estadoOutputConverter;
 
     @GetMapping
-    public List<EstadoModel> listar() {
+    public CollectionModel<EstadoModel> listar() {
         return estadoInputConverter.toCollectionModel(estadoRepository.findAll());
     }
 

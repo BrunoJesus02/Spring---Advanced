@@ -12,6 +12,9 @@ import com.algaworks.algaworksapi.domain.model.Cidade;
 import com.algaworks.algaworksapi.domain.repository.CidadeRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping(value = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,7 +47,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeModelOutputConverter cidadeOutputConverter;
 
     @GetMapping
-    public List<CidadeModel> listar() {
+    public CollectionModel<CidadeModel> listar() {
         return cidadeInputConverter.toCollectionModel(cidadeRepository.findAll());
     }
 

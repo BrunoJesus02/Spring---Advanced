@@ -7,6 +7,7 @@ import com.algaworks.algaworksapi.api.model.input.PedidoInput;
 import com.algaworks.algaworksapi.api.model.output.PedidoModel;
 import com.algaworks.algaworksapi.api.model.output.PedidoResumoModel;
 import com.algaworks.algaworksapi.api.openapi.controller.PedidoControllerOpenApi;
+import com.algaworks.algaworksapi.core.data.PageWrapper;
 import com.algaworks.algaworksapi.core.data.PageableTranslator;
 import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
@@ -23,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -49,14 +52,18 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+
     @GetMapping
-    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
-        pageable = traduzirPageable(pageable);
+    public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
+        Pageable pageableTraduzido = traduzirPageable(pageable);
 
-        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
-        List<PedidoResumoModel> pedidosPageModel = pedidoResumoModelInputConverter.toCollectionModel(pedidosPage.getContent());
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
 
-        return new PageImpl<>(pedidosPageModel, pageable, pedidosPage.getTotalElements());
+        pedidosPage = new PageWrapper<>(pedidosPage, pageable);
+
+        return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelInputConverter);
     }
 
     @GetMapping("/{codigoPedido}")

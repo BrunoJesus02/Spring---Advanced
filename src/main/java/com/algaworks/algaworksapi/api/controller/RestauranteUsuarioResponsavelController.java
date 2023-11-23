@@ -6,11 +6,16 @@ import com.algaworks.algaworksapi.api.openapi.controller.RestauranteUsuarioRespo
 import com.algaworks.algaworksapi.domain.model.Restaurante;
 import com.algaworks.algaworksapi.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/responsaveis", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,10 +28,13 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     private UsuarioModelInputConverter usuarioModelInputConverter;
 
     @GetMapping
-    public List<UsuarioModel> listar(@PathVariable Long restauranteId) {
+    public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        return usuarioModelInputConverter.toCollectionModel(restaurante.getResponsaveis());
+        return usuarioModelInputConverter.toCollectionModel(restaurante.getResponsaveis())
+                .removeLinks()
+                .add(linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+                        .listar(restauranteId)).withSelfRel());
     }
 
     @DeleteMapping("/{usuarioId}")
