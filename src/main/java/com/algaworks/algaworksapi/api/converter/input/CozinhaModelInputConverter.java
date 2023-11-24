@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.controller.CidadeController;
 import com.algaworks.algaworksapi.api.controller.CozinhaController;
 import com.algaworks.algaworksapi.api.model.output.CozinhaModel;
@@ -21,16 +22,19 @@ public class CozinhaModelInputConverter extends RepresentationModelAssemblerSupp
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private LinksGenerator linksGenerator;
+
     public CozinhaModelInputConverter() {
         super(CozinhaController.class, CozinhaModel.class);
     }
 
+    @Override
     public CozinhaModel toModel(Cozinha cozinha) {
         CozinhaModel cozinhaModel = createModelWithId(cozinha.getId(), cozinha);
-
         modelMapper.map(cozinha, cozinhaModel);
 
-        cozinhaModel.add(linkTo(CidadeController.class).withRel("cozinhas"));
+        cozinhaModel.add(linksGenerator.linkToCozinhas("cozinhas"));
 
         return cozinhaModel;
     }

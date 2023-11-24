@@ -1,13 +1,16 @@
 package com.algaworks.algaworksapi.api.controller;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.converter.input.PermissaoModelInputConverter;
 import com.algaworks.algaworksapi.api.model.output.PermissaoModel;
 import com.algaworks.algaworksapi.api.openapi.controller.GrupoPermissaoControllerOpenApi;
 import com.algaworks.algaworksapi.domain.model.Grupo;
 import com.algaworks.algaworksapi.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,21 +25,39 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @Autowired
     private PermissaoModelInputConverter permissaoModelInputConverter;
 
+    @Autowired
+    private LinksGenerator linksGenerator;
+
     @GetMapping()
-    public List<PermissaoModel> listar(@PathVariable Long grupoId) {
+    public CollectionModel<PermissaoModel> listar(@PathVariable Long grupoId) {
         Grupo grupo = grupoService.buscarOuFalhar(grupoId);
-        return permissaoModelInputConverter.toCollectionModel(grupo.getPermissoes());
+        CollectionModel<PermissaoModel> permissoesModel
+                = permissaoModelInputConverter.toCollectionModel(grupo.getPermissoes())
+                .removeLinks()
+                .add(linksGenerator.linkToGrupoPermissoes(grupoId))
+                .add(linksGenerator.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+
+        permissoesModel.getContent().forEach(permissaoModel -> {
+            permissaoModel.add(linksGenerator.linkToGrupoPermissaoDesassociacao(
+                    grupoId, permissaoModel.getId(), "desassociar"));
+        });
+
+        return permissoesModel;
     }
 
     @DeleteMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+    public ResponseEntity<Void> desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
         grupoService.desassociarPermissao(grupoId, permissaoId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+    public ResponseEntity<Void> associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
         grupoService.associarPermissao(grupoId, permissaoId);
+
+        return ResponseEntity.noContent().build();
     }
 }

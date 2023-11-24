@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.controller;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.converter.input.ProdutoModelInputConverter;
 import com.algaworks.algaworksapi.api.converter.output.ProdutoModelOutputConverter;
 import com.algaworks.algaworksapi.api.model.output.ProdutoModel;
@@ -11,6 +12,7 @@ import com.algaworks.algaworksapi.domain.repository.ProdutoRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroProdutoService;
 import com.algaworks.algaworksapi.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +39,12 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private ProdutoModelOutputConverter produtoModelOutputConverter;
 
+    @Autowired
+    private LinksGenerator linksGenerator;
+
     @GetMapping
-    public List<ProdutoModel> listar(@PathVariable Long restauranteId,
-                                     @RequestParam(required = false) boolean incluirInativos) {
+    public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
+                                                @RequestParam(required = false) Boolean incluirInativos) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
         List<Produto> todosProdutos = null;
 
@@ -49,7 +54,8 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
             todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
         }
 
-        return produtoModelInputConverter.toCollectionModel(todosProdutos);
+        return produtoModelInputConverter.toCollectionModel(todosProdutos)
+                .add(linksGenerator.linkToProdutos(restauranteId));
     }
 
     @GetMapping("/{produtoId}")

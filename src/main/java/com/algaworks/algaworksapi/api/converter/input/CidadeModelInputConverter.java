@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.controller.CidadeController;
 import com.algaworks.algaworksapi.api.controller.EstadoController;
 import com.algaworks.algaworksapi.api.model.output.CidadeModel;
@@ -22,6 +23,9 @@ public class CidadeModelInputConverter extends RepresentationModelAssemblerSuppo
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private LinksGenerator linksGenerator;
+
     public CidadeModelInputConverter() {
         super(CidadeController.class, CidadeModel.class);
     }
@@ -32,12 +36,9 @@ public class CidadeModelInputConverter extends RepresentationModelAssemblerSuppo
 
         modelMapper.map(cidade, cidadeModel);
 
-        cidadeModel.add(linkTo(methodOn(CidadeController.class)
-                .listar())
-                .withRel("cidades"));
-        cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-                .buscar(cidadeModel.getEstado().getId()))
-                .withSelfRel());
+        cidadeModel.add(linksGenerator.linkToCidades("cidades"));
+
+        cidadeModel.getEstado().add(linksGenerator.linkToEstado(cidadeModel.getEstado().getId()));
 
         return cidadeModel;
     }
@@ -45,6 +46,6 @@ public class CidadeModelInputConverter extends RepresentationModelAssemblerSuppo
     @Override
     public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
         return super.toCollectionModel(entities)
-                .add(linkTo(CidadeController.class).withSelfRel());
+                .add(linksGenerator.linkToCidades());
     }
 }

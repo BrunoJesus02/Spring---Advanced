@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.controller.CidadeController;
 import com.algaworks.algaworksapi.api.controller.EstadoController;
 import com.algaworks.algaworksapi.api.model.output.EstadoModel;
@@ -22,16 +23,19 @@ public class EstadoModelInputConverter extends RepresentationModelAssemblerSuppo
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private LinksGenerator linksGenerator;
+
     public EstadoModelInputConverter() {
         super(EstadoController.class, EstadoModel.class);
     }
 
+    @Override
     public EstadoModel toModel(Estado estado) {
         EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
-
         modelMapper.map(estado, estadoModel);
 
-        estadoModel.add(linkTo(EstadoController.class).withRel("estados"));
+        estadoModel.add(linksGenerator.linkToEstados("estados"));
 
         return estadoModel;
     }
@@ -39,6 +43,6 @@ public class EstadoModelInputConverter extends RepresentationModelAssemblerSuppo
     @Override
     public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> entities) {
         return super.toCollectionModel(entities)
-                .add(linkTo(EstadoController.class).withSelfRel());
+                .add(linksGenerator.linkToEstados());
     }
 }

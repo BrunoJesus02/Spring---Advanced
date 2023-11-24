@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.controller.*;
 import com.algaworks.algaworksapi.api.model.output.PedidoModel;
 import com.algaworks.algaworksapi.domain.model.Pedido;
@@ -8,12 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class PedidoModelInputConverter extends RepresentationModelAssemblerSupport<Pedido, PedidoModel> {
@@ -21,33 +17,47 @@ public class PedidoModelInputConverter extends RepresentationModelAssemblerSuppo
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private LinksGenerator linksGenerator;
+
     public PedidoModelInputConverter() {
         super(PedidoController.class, PedidoModel.class);
     }
 
+    @Override
     public PedidoModel toModel(Pedido pedido) {
         PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
-        pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
 
-        pedidoModel.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
-                .buscar(pedido.getRestaurante().getId())).withSelfRel());
+        pedidoModel.add(linksGenerator.linkToPedidos("pedidos"));
 
-        pedidoModel.getCliente().add(linkTo(methodOn(UsuarioController.class)
-                .buscar(pedido.getCliente().getId())).withSelfRel());
+        if(pedido.podeSerConfirmado()) {
+            pedidoModel.add(linksGenerator.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+        }
 
-        // Passamos null no segundo argumento, porque é indiferente para a
-        // construção da URL do recurso de forma de pagamento
-        pedidoModel.getFormaPagamento().add(linkTo(methodOn(FormaPagamentoController.class)
-                .buscar(pedido.getFormaPagamento().getId(), null)).withSelfRel());
+        if(pedido.podeSerCancelado()) {
+            pedidoModel.add(linksGenerator.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
+        }
 
-        pedidoModel.getEnderecoEntrega().getCidade().add(linkTo(methodOn(CidadeController.class)
-                .buscar(pedido.getEnderecoEntrega().getCidade().getId())).withSelfRel());
+        if(pedido.podeSerEntregue()) {
+            pedidoModel.add(linksGenerator.linkToEntregarPedido(pedido.getCodigo(), "entregar"));
+        }
+
+        pedidoModel.getRestaurante().add(
+                linksGenerator.linkToRestaurante(pedido.getRestaurante().getId()));
+
+        pedidoModel.getCliente().add(
+                linksGenerator.linkToUsuario(pedido.getCliente().getId()));
+
+        pedidoModel.getFormaPagamento().add(
+                linksGenerator.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+
+        pedidoModel.getEnderecoEntrega().getCidade().add(
+                linksGenerator.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
 
         pedidoModel.getItens().forEach(item -> {
-            item.add(linkTo(methodOn(RestauranteProdutoController.class)
-                    .buscar(pedidoModel.getRestaurante().getId(), item.getProdutoId()))
-                    .withRel("produto"));
+            item.add(linksGenerator.linkToProduto(
+                    pedidoModel.getRestaurante().getId(), item.getProdutoId(), "produto"));
         });
 
         return pedidoModel;

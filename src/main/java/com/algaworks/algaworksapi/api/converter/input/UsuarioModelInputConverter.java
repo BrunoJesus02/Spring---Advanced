@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.controller.*;
 import com.algaworks.algaworksapi.api.model.output.UsuarioModel;
 import com.algaworks.algaworksapi.domain.model.Usuario;
@@ -22,19 +23,21 @@ public class UsuarioModelInputConverter extends RepresentationModelAssemblerSupp
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private LinksGenerator linksGenerator;
+
     public UsuarioModelInputConverter() {
         super(UsuarioController.class, UsuarioModel.class);
     }
 
+    @Override
     public UsuarioModel toModel(Usuario usuario) {
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
 
-        usuarioModel.add(linkTo(UsuarioController.class).withRel("usuarios"));
+        usuarioModel.add(linksGenerator.linkToUsuarios("usuarios"));
 
-        usuarioModel.add(linkTo(methodOn(UsuarioGrupoController.class)
-                .listar(usuarioModel.getId()))
-                .withRel("grupos-usuario"));
+        usuarioModel.add(linksGenerator.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
 
         return usuarioModel;
     }
@@ -42,6 +45,6 @@ public class UsuarioModelInputConverter extends RepresentationModelAssemblerSupp
     @Override
     public CollectionModel<UsuarioModel> toCollectionModel(Iterable<? extends Usuario> entities) {
         return super.toCollectionModel(entities)
-                .add(linkTo(UsuarioController.class).withSelfRel());
+                .add(linksGenerator.linkToUsuarios());
     }
 }

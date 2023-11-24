@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.converter.input;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.controller.CidadeController;
 import com.algaworks.algaworksapi.api.controller.PedidoController;
 import com.algaworks.algaworksapi.api.controller.RestauranteController;
@@ -25,21 +26,24 @@ public class PedidoResumoModelInputConverter extends RepresentationModelAssemble
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private LinksGenerator linksGenerator;
+
     public PedidoResumoModelInputConverter() {
         super(PedidoController.class, PedidoResumoModel.class);
     }
 
+    @Override
     public PedidoResumoModel toModel(Pedido pedido) {
-        PedidoResumoModel pedidoModel = createModelWithId(pedido.getId(), pedido);
+        PedidoResumoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
 
-        pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
+        pedidoModel.add(linksGenerator.linkToPedidos("pedidos"));
 
-        pedidoModel.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
-                .buscar(pedido.getRestaurante().getId())).withSelfRel());
+        pedidoModel.getRestaurante().add(
+                linksGenerator.linkToRestaurante(pedido.getRestaurante().getId()));
 
-        pedidoModel.getCliente().add(linkTo(methodOn(UsuarioController.class)
-                .buscar(pedido.getCliente().getId())).withSelfRel());
+        pedidoModel.getCliente().add(linksGenerator.linkToUsuario(pedido.getCliente().getId()));
 
         return pedidoModel;
     }
