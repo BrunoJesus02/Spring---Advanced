@@ -1,11 +1,8 @@
 package com.algaworks.algaworksapi.core.springfox;
 
 import com.algaworks.algaworksapi.api.exceptionhandler.Problem;
-import com.algaworks.algaworksapi.api.model.output.CozinhaModel;
-import com.algaworks.algaworksapi.api.model.output.PedidoResumoModel;
-import com.algaworks.algaworksapi.api.openapi.model.CozinhasModelOpenApi;
-import com.algaworks.algaworksapi.api.openapi.model.PageableModelOpenApi;
-import com.algaworks.algaworksapi.api.openapi.model.PedidosResumoModelOpenApi;
+import com.algaworks.algaworksapi.api.model.output.*;
+import com.algaworks.algaworksapi.api.openapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +10,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -61,12 +61,41 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class,
                         URLStreamHandler.class, Resource.class, File.class, InputStream.class)
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
                 .alternateTypeRules(AlternateTypeRules.newRule(
-                        typeResolver.resolve(Page.class, CozinhaModel.class),
+                        typeResolver.resolve(PagedModel.class, CozinhaModel.class),
                         CozinhasModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, PedidoResumoModel.class),
                         PedidosResumoModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, CozinhaModel.class),
+                        CidadeCollectionModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, EstadoModel.class),
+                        EstadosModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class),
+                        FormasPagamentoModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, GrupoModel.class),
+                        GruposModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, PermissaoModel.class),
+                        PermissoesModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(PagedModel.class, PedidoResumoModel.class),
+                        PedidosResumoModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, ProdutoModel.class),
+                        ProdutosModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class),
+                        RestaurantesBasicoModelOpenApi.class))
+
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
+                        UsuariosModelOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cidades", "Gerencia as cidades"),
                         new Tag("Grupos", "Gerencia os grupos de usuários"),

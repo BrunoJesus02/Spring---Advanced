@@ -1,5 +1,6 @@
 package com.algaworks.algaworksapi.api.controller;
 
+import com.algaworks.algaworksapi.api.LinksGenerator;
 import com.algaworks.algaworksapi.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.algaworks.algaworksapi.domain.filter.VendaDiariaFilter;
 import com.algaworks.algaworksapi.domain.model.dto.VendaDiaria;
@@ -7,6 +8,7 @@ import com.algaworks.algaworksapi.domain.service.VendaQueryService;
 import com.algaworks.algaworksapi.domain.service.VendaReportService;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,21 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
     private VendaQueryService vendaQueryService;
+
+    @Autowired
+    private LinksGenerator linksGenerator;
+
+    public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> {}
+
+    @Override
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public EstatisticasModel estatisticas() {
+        var estatisticasModel = new EstatisticasModel();
+
+        estatisticasModel.add(linksGenerator.linkToEstatisticasVendasDiarias("vendas-diarias"));
+
+        return estatisticasModel;
+    }
 
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
