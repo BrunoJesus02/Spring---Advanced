@@ -1,8 +1,8 @@
 package com.algaworks.algaworksapi.core.springfox;
 
 import com.algaworks.algaworksapi.api.exceptionhandler.Problem;
-import com.algaworks.algaworksapi.api.model.output.*;
-import com.algaworks.algaworksapi.api.openapi.model.*;
+import com.algaworks.algaworksapi.api.v1.model.output.*;
+import com.algaworks.algaworksapi.api.v1.openapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
