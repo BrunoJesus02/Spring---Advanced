@@ -3,6 +3,7 @@ package com.algaworks.algaworksapi.api.v2.converter.input;
 import com.algaworks.algaworksapi.api.v1.LinksGenerator;
 import com.algaworks.algaworksapi.api.v1.controller.CidadeController;
 import com.algaworks.algaworksapi.api.v1.model.output.CidadeModel;
+import com.algaworks.algaworksapi.api.v2.LinksGeneratorV2;
 import com.algaworks.algaworksapi.api.v2.controller.CidadeControllerV2;
 import com.algaworks.algaworksapi.api.v2.model.output.CidadeModelV2;
 import com.algaworks.algaworksapi.domain.model.Cidade;
@@ -19,7 +20,7 @@ public class CidadeModelInputConverterV2 extends RepresentationModelAssemblerSup
     private ModelMapper modelMapper;
 
     @Autowired
-    private LinksGenerator linksGenerator;
+    private LinksGeneratorV2 linksGenerator;
 
     public CidadeModelInputConverterV2() {
         super(CidadeControllerV2.class, CidadeModelV2.class);

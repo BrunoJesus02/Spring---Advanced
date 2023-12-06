@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/cidades", produces = AlgaMidiaTypes.V1_APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
@@ -36,6 +36,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Autowired
     private CidadeModelOutputConverter cidadeOutputConverter;
 
+    @Override
     @GetMapping
     public CollectionModel<CidadeModel> listar() {
         return cidadeInputConverter.toCollectionModel(cidadeRepository.findAll());

@@ -5,7 +5,7 @@ import com.algaworks.algaworksapi.api.v2.converter.input.CidadeModelInputConvert
 import com.algaworks.algaworksapi.api.v2.converter.output.CidadeModelOutputConverterV2;
 import com.algaworks.algaworksapi.api.v2.model.input.CidadeInputV2;
 import com.algaworks.algaworksapi.api.v2.model.output.CidadeModelV2;
-import com.algaworks.algaworksapi.core.web.AlgaMidiaTypes;
+import com.algaworks.algaworksapi.api.v2.openapi.controller.CidadeControllerV2OpenApi;
 import com.algaworks.algaworksapi.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
 import com.algaworks.algaworksapi.domain.model.Cidade;
@@ -14,13 +14,14 @@ import com.algaworks.algaworksapi.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/cidades", produces = AlgaMidiaTypes.V2_APPLICATION_JSON_VALUE)
-public class CidadeControllerV2 {
+@RequestMapping(value = "/v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CidadeControllerV2 implements CidadeControllerV2OpenApi {
 
     @Autowired
     private CidadeRepository cidadeRepository;
