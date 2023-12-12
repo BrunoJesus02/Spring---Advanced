@@ -6,6 +6,7 @@ import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaExceptio
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 
 import static com.fasterxml.jackson.databind.JsonMappingException.Reference;
 
+@Slf4j
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -160,7 +162,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleUncaught(Exception ex, WebRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        ex.printStackTrace();
+        log.error(ex.getMessage(), ex);
 
         Problem problem = createProblemBuilder(status, ProblemType.ERRO_DE_SISTEMA, MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
