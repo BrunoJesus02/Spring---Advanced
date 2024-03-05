@@ -22,6 +22,7 @@
         <modelmapper.version>3.0.0</modelmapper.version>
         <aws-java-sdk-s3.version>1.12.336</aws-java-sdk-s3.version>
         <spring-fox.version>2.9.2</spring-fox.version>
+        <oauth2-oidc-sdk.version>6.21.2</oauth2-oidc-sdk.version>
     </properties>
 
     <!-- SPRING -->
@@ -91,6 +92,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
 
         <!-- MySql - BD -->
 
