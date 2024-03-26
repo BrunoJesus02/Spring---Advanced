@@ -4,6 +4,7 @@ import com.algaworks.algaworksapi.api.v1.LinksGenerator;
 import com.algaworks.algaworksapi.api.v1.converter.input.UsuarioModelInputConverter;
 import com.algaworks.algaworksapi.api.v1.model.output.UsuarioModel;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.model.Restaurante;
 import com.algaworks.algaworksapi.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     @Autowired
     private LinksGenerator linksGenerator;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -45,6 +47,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
         return usuariosModel;
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
@@ -53,6 +56,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {

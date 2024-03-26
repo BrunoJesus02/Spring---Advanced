@@ -7,6 +7,7 @@ import com.algaworks.algaworksapi.api.v1.model.input.SenhaInput;
 import com.algaworks.algaworksapi.api.v1.model.input.UsuarioComSenhaInput;
 import com.algaworks.algaworksapi.api.v1.model.input.UsuarioInput;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.model.Usuario;
 import com.algaworks.algaworksapi.domain.repository.UsuarioRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroUsuarioService;
@@ -34,11 +35,13 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     @Autowired
     private UsuarioModelOutputConverter usuarioOutputConverter;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public CollectionModel<UsuarioModel> listar() {
         return usuarioInputConverter.toCollectionModel(usuarioRepository.findAll());
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping("/{usuarioId}")
     public UsuarioModel buscar(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
@@ -46,6 +49,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioInputConverter.toModel(usuario);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
@@ -55,6 +59,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioInputConverter.toModel(usuario);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
     @PutMapping("/{usuarioId}")
     public UsuarioModel atualizar(@PathVariable Long usuarioId,
                                   @RequestBody @Valid UsuarioInput usuarioInput) {
@@ -65,6 +70,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioInputConverter.toModel(usuarioAtual);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
     @PutMapping("/{usuarioId}/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {

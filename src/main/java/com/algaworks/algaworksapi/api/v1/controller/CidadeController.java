@@ -6,6 +6,7 @@ import com.algaworks.algaworksapi.api.v1.converter.input.CidadeModelInputConvert
 import com.algaworks.algaworksapi.api.v1.converter.output.CidadeModelOutputConverter;
 import com.algaworks.algaworksapi.api.v1.model.input.CidadeInput;
 import com.algaworks.algaworksapi.api.v1.model.output.CidadeModel;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.core.web.AlgaMidiaTypes;
 import com.algaworks.algaworksapi.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
@@ -36,12 +37,14 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Autowired
     private CidadeModelOutputConverter cidadeOutputConverter;
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<CidadeModel> listar() {
         return cidadeInputConverter.toCollectionModel(cidadeRepository.findAll());
     }
 
+    @CheckSecurity.Cidades.PodeConsultar
     @GetMapping("/{cidadeId}")
     public CidadeModel buscar(@PathVariable Long cidadeId) {
         return cidadeInputConverter.toModel(cadastroCidade.buscarOuFalhar(cidadeId));
@@ -62,6 +65,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @PutMapping("/{cidadeId}")
     public CidadeModel atualizar(@PathVariable Long cidadeId,
                                  @RequestBody @Valid CidadeInput cidadeInput) {
@@ -76,6 +80,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @DeleteMapping("/{cidadeId}")
     public void remover(@PathVariable Long cidadeId) {
             cadastroCidade.excluir(cidadeId);

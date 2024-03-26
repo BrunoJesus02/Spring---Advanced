@@ -3,6 +3,7 @@ package com.algaworks.algaworksapi.api.v1.controller;
 import com.algaworks.algaworksapi.api.v1.converter.input.PermissaoModelInputConverter;
 import com.algaworks.algaworksapi.api.v1.model.output.PermissaoModel;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.PermissaoControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.model.Permissao;
 import com.algaworks.algaworksapi.domain.repository.PermissaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class PermissaoController implements PermissaoControllerOpenApi {
     @Autowired
     private PermissaoModelInputConverter permissaoModelInputConverter;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<PermissaoModel> listar() {

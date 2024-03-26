@@ -9,6 +9,8 @@ import com.algaworks.algaworksapi.api.v1.model.output.PedidoResumoModel;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algaworksapi.core.data.PageWrapper;
 import com.algaworks.algaworksapi.core.data.PageableTranslator;
+import com.algaworks.algaworksapi.core.security.AlgaSecurity;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
 import com.algaworks.algaworksapi.domain.model.Pedido;
@@ -51,6 +53,10 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
+    @CheckSecurity.Pedidos.PodePesquisar
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
         Pageable pageableTraduzido = traduzirPageable(pageable);
@@ -62,6 +68,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelInputConverter);
     }
 
+    @CheckSecurity.Pedidos.PodeBuscar
     @GetMapping("/{codigoPedido}")
     public PedidoModel buscar(@PathVariable String codigoPedido) {
         Pedido pedido = pedidoService.buscarOuFalhar(codigoPedido);
@@ -69,6 +76,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         return pedidoModelInputConverter.toModel(pedido);
     }
 
+    @CheckSecurity.Pedidos.PodeCriar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
@@ -77,7 +85,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
             // TODO pegar usuário autenticado
             novoPedido.setCliente(new Usuario());
-            novoPedido.getCliente().setId(1L);
+            novoPedido.getCliente().setId(algaSecurity.getUsuarioId());
 
             return pedidoModelInputConverter.toModel(pedidoService.emitir(novoPedido));
         } catch (EntidadeNaoEncontradaException e) {

@@ -5,12 +5,11 @@ import com.algaworks.algaworksapi.api.v1.converter.output.CozinhaModelOutputConv
 import com.algaworks.algaworksapi.api.v1.model.output.CozinhaModel;
 import com.algaworks.algaworksapi.api.v1.model.input.CozinhaInput;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.CozinhaControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.model.Cozinha;
 import com.algaworks.algaworksapi.domain.repository.CozinhaRepository;
 import com.algaworks.algaworksapi.domain.service.CadastroCozinhaService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +41,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping
     public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
         log.info("Consultando cozinhas");
@@ -51,11 +51,13 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         return pagedResourcesAssembler.toModel(cozinhasPage, cozinhaInputConverter);
     }
 
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping("/{cozinhaId}")
     public CozinhaModel buscar(@PathVariable Long cozinhaId) {
         return cozinhaInputConverter.toModel(cadastroCozinha.buscarOuFalhar(cozinhaId));
     }
 
+    @CheckSecurity.Cozinhas.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -64,6 +66,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         return cozinhaInputConverter.toModel(cadastroCozinha.salvar(cozinha));
     }
 
+    @CheckSecurity.Cozinhas.PodeEditar
     @PutMapping("/{cozinhaId}")
     public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody CozinhaInput cozinhaInput) {
         Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
@@ -73,6 +76,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         return cozinhaInputConverter.toModel(cadastroCozinha.salvar(cozinhaAtual));
     }
 
+    @CheckSecurity.Cozinhas.PodeEditar
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long cozinhaId) {

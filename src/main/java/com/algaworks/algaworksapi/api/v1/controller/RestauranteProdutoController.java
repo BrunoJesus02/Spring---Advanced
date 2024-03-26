@@ -6,6 +6,7 @@ import com.algaworks.algaworksapi.api.v1.converter.output.ProdutoModelOutputConv
 import com.algaworks.algaworksapi.api.v1.model.output.ProdutoModel;
 import com.algaworks.algaworksapi.api.v1.model.input.ProdutoInput;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.model.Produto;
 import com.algaworks.algaworksapi.domain.model.Restaurante;
 import com.algaworks.algaworksapi.domain.repository.ProdutoRepository;
@@ -42,6 +43,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private LinksGenerator linksGenerator;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
                                                 @RequestParam(required = false) Boolean incluirInativos) {
@@ -58,6 +60,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
                 .add(linksGenerator.linkToProdutos(restauranteId));
     }
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping("/{produtoId}")
     public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
@@ -65,6 +68,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelInputConverter.toModel(produto);
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoModel adicionar(@PathVariable Long restauranteId,
@@ -79,6 +83,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelInputConverter.toModel(produto);
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{produtoId}")
     public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
                                   @RequestBody @Valid ProdutoInput produtoInput) {

@@ -4,6 +4,7 @@ import com.algaworks.algaworksapi.api.v1.converter.input.PedidoModelInputConvert
 import com.algaworks.algaworksapi.api.v1.converter.input.PedidoResumoModelInputConverter;
 import com.algaworks.algaworksapi.api.v1.converter.output.PedidoModelOutputConverter;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.FluxoPedidoControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.repository.PedidoRepository;
 import com.algaworks.algaworksapi.domain.service.FluxoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @PutMapping("/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> confirmarPedido(@PathVariable String codigoPedido) {
@@ -39,6 +41,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @PutMapping("/entrega")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> entregarPedido(@PathVariable String codigoPedido) {
@@ -47,6 +50,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @PutMapping("/cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> cancelarPedido(@PathVariable String codigoPedido) {

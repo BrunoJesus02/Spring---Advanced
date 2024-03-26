@@ -9,6 +9,7 @@ import com.algaworks.algaworksapi.api.v1.model.output.RestauranteApenasNomeModel
 import com.algaworks.algaworksapi.api.v1.model.output.RestauranteBasicoModel;
 import com.algaworks.algaworksapi.api.v1.model.output.RestauranteModel;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.RestauranteControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.exception.NegocioException;
@@ -67,24 +68,28 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 //    }
 
 //    @JsonView(RestauranteView.Resumo.class)
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<RestauranteBasicoModel> listar() {
         return restauranteBasicoInputConverter.toCollectionModel(restauranteRepository.findAll());
     }
 
 //    @JsonView(RestauranteView.ApenasNome.class)
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(params = "projecao=apenas-nome")
     public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
         return restauranteApenasNomeInputConverter.toCollectionModel(restauranteRepository.findAll());
     }
 
     @GetMapping("/{restauranteId}")
+    @CheckSecurity.Restaurantes.PodeConsultar
     public RestauranteModel buscar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
         return restauranteInputConverter.toModel(restaurante);
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
@@ -96,6 +101,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{restauranteId}")
     public RestauranteModel atualizar(@RequestBody @Valid RestauranteInput restauranteInput, @PathVariable Long restauranteId) {
         try {
@@ -109,6 +115,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{restauranteId}/ativar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> ativar(@PathVariable Long restauranteId) {
@@ -117,6 +124,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/{restauranteId}/inativar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
@@ -125,6 +133,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/ativacoes")
     public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
         try {
@@ -134,6 +143,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/inativacoes")
     public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
         try {
@@ -143,6 +153,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @PutMapping("/{restauranteId}/abertura")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> abrir(@PathVariable Long restauranteId) {
@@ -151,6 +162,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @PutMapping("/{restauranteId}/fechamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> fechar(@PathVariable Long restauranteId) {

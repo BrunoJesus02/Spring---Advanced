@@ -4,6 +4,7 @@ import com.algaworks.algaworksapi.api.v1.LinksGenerator;
 import com.algaworks.algaworksapi.api.v1.converter.input.FormaPagamentoInputConverter;
 import com.algaworks.algaworksapi.api.v1.model.output.FormaPagamentoModel;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.model.Restaurante;
 import com.algaworks.algaworksapi.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @Autowired
     private LinksGenerator linksGenerator;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -43,6 +45,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         return formaPagamentoModels;
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
@@ -51,6 +54,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {

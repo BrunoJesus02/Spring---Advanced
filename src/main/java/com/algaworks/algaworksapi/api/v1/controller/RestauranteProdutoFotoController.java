@@ -4,6 +4,7 @@ import com.algaworks.algaworksapi.api.v1.converter.input.FotoProdutoModelInputCo
 import com.algaworks.algaworksapi.api.v1.model.input.FotoProdutoInput;
 import com.algaworks.algaworksapi.api.v1.model.output.FotoProdutoModel;
 import com.algaworks.algaworksapi.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import com.algaworks.algaworksapi.core.security.CheckSecurity;
 import com.algaworks.algaworksapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algaworksapi.domain.model.FotoProduto;
 import com.algaworks.algaworksapi.domain.model.Produto;
@@ -41,6 +42,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @Autowired
     private FotoStorageService fotoStorageService;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @Override
     @GetMapping
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
@@ -49,6 +51,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return fotoProdutoInputConverter.toModel(fotoProduto);
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
@@ -69,6 +72,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
        return fotoProdutoInputConverter.toModel(catalogoFotoProdutoService.salvar(foto, arquivoRecebido.getInputStream()));
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
@@ -98,6 +102,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
