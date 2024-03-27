@@ -3,6 +3,7 @@ package com.algaworks.algaworksapi.api.v1.converter.input;
 import com.algaworks.algaworksapi.api.v1.LinksGenerator;
 import com.algaworks.algaworksapi.api.v1.controller.RestauranteProdutoController;
 import com.algaworks.algaworksapi.api.v1.model.output.ProdutoModel;
+import com.algaworks.algaworksapi.core.security.AlgaSecurity;
 import com.algaworks.algaworksapi.domain.model.Produto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ProdutoModelInputConverter
     @Autowired
     private LinksGenerator linksGenerator;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public ProdutoModelInputConverter() {
         super(RestauranteProdutoController.class, ProdutoModel.class);
     }
@@ -30,10 +34,13 @@ public class ProdutoModelInputConverter
 
         modelMapper.map(produto, produtoModel);
 
-        produtoModel.add(linksGenerator.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
 
-        produtoModel.add(linksGenerator.linkToFotoProduto(
-                produto.getRestaurante().getId(), produto.getId(), "foto"));
+        if (algaSecurity.podeConsultarRestaurantes()) {
+            produtoModel.add(linksGenerator.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+
+            produtoModel.add(linksGenerator.linkToFotoProduto(
+                    produto.getRestaurante().getId(), produto.getId(), "foto"));
+        }
 
         return produtoModel;
     }

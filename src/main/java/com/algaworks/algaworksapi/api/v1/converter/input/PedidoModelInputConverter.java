@@ -3,6 +3,7 @@ package com.algaworks.algaworksapi.api.v1.converter.input;
 import com.algaworks.algaworksapi.api.v1.LinksGenerator;
 import com.algaworks.algaworksapi.api.v1.model.output.PedidoModel;
 import com.algaworks.algaworksapi.api.v1.controller.PedidoController;
+import com.algaworks.algaworksapi.core.security.AlgaSecurity;
 import com.algaworks.algaworksapi.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class PedidoModelInputConverter extends RepresentationModelAssemblerSuppo
     @Autowired
     private LinksGenerator linksGenerator;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public PedidoModelInputConverter() {
         super(PedidoController.class, PedidoModel.class);
     }
@@ -31,16 +35,18 @@ public class PedidoModelInputConverter extends RepresentationModelAssemblerSuppo
 
         pedidoModel.add(linksGenerator.linkToPedidos("pedidos"));
 
-        if(pedido.podeSerConfirmado()) {
-            pedidoModel.add(linksGenerator.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
-        }
+        if(algaSecurity.podeGerenciarPedidos(pedido.getCodigo())) {
+            if(pedido.podeSerConfirmado()) {
+                pedidoModel.add(linksGenerator.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+            }
 
-        if(pedido.podeSerCancelado()) {
-            pedidoModel.add(linksGenerator.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
-        }
+            if(pedido.podeSerCancelado()) {
+                pedidoModel.add(linksGenerator.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
+            }
 
-        if(pedido.podeSerEntregue()) {
-            pedidoModel.add(linksGenerator.linkToEntregarPedido(pedido.getCodigo(), "entregar"));
+            if(pedido.podeSerEntregue()) {
+                pedidoModel.add(linksGenerator.linkToEntregarPedido(pedido.getCodigo(), "entregar"));
+            }
         }
 
         pedidoModel.getRestaurante().add(

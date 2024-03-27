@@ -16,14 +16,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private ApiRetirementHandler apiRetirementHandler;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedMethods("*");
-//              .allowedOrigins("*")
-//              .maxAge(30);
-    }
-
     @Bean
     public Filter shallowEtagHeaderFilter() {
         return new ShallowEtagHeaderFilter();
